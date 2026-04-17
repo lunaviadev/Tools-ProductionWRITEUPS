@@ -36,7 +36,7 @@ Each week will contain its own bibliography for references and sources specifica
 
 ---
 
-## Week 2 - [Name of Week]
+## Week 2 - [Data Handling & Automation]
 
 [View Week 2 Developer Commentary](DevelopercommentaryWK2.md)
 
@@ -44,7 +44,7 @@ Each week will contain its own bibliography for references and sources specifica
 
 ---
 
-## Week 3 - [Name of Week]
+## Week 3 - [Networking, Multiplayer & Compliance]
 
 [View Week 3 Developer Commentary](DevelopercommentaryWK3.md)
 
@@ -52,7 +52,7 @@ Each week will contain its own bibliography for references and sources specifica
 
 ---
 
-## Week 4 - [Name of Week]
+## Week 4 - [Project Pitches]
 
 [View Week 4 Developer Commentary](DevelopercommentaryWK4.md)
 
@@ -60,7 +60,7 @@ Each week will contain its own bibliography for references and sources specifica
 
 ---
 
-## Week 5 - [Name of Week]
+## Week 5 - [Web Services & Online Integration]
 
 [View Week 5 Developer Commentary](DevelopercommentaryWK5.md)
 
@@ -68,7 +68,7 @@ Each week will contain its own bibliography for references and sources specifica
 
 ---
 
-## Week 6 - [Name of Week]
+## Week 6 - [Analytics, Databases & Backends]
 
 [View Week 6 Developer Commentary](DevelopercommentaryWK6.md)
 
@@ -76,7 +76,7 @@ Each week will contain its own bibliography for references and sources specifica
 
 ---
 
-## Week 7 - [Name of Week]
+## Week 7 - [Platforms, Hardware & System Administration]
 
 [View Week 7 Developer Commentary](DevelopercommentaryWK7.md)
 
@@ -84,7 +84,7 @@ Each week will contain its own bibliography for references and sources specifica
 
 ---
 
-## Week 8 - [Name of Week]
+## Week 8 - [User Testing Session]
 
 [View Week 8 Developer Commentary](DevelopercommentaryWK8.md)
 
@@ -92,7 +92,7 @@ Each week will contain its own bibliography for references and sources specifica
 
 ---
 
-## Week 9 - [Name of Week]
+## Week 9 - [Project Workshop]
 
 [View Week 9 Developer Commentary](DevelopercommentaryWK9.md)
 
@@ -100,7 +100,7 @@ Each week will contain its own bibliography for references and sources specifica
 
 ---
 
-## Week 10 - [Name of Week]
+## Week 10 - [Final Presentation]
 
 [View Week 10 Developer Commentary](DevelopercommentaryWK10.md)
 
