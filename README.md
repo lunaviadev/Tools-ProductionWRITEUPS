@@ -6,15 +6,11 @@
 
 **Student ID:** [2326296]
 
-**Total Word Count:** [XXXX]
+**Total Word Count:** [8883]
 
-**API Reference Link:** [URL]
+**Build Link:** 
 
-**User Guide Link:** [URL]
-
-**Build Link:** https://elementor.com/tools/html-embed-code-generator/
-
-**Video Demonstration Link:** https://elementor.com/tools/html-embed-code-generator/
+**Video Demonstration Link:** 
 
 ---
 
@@ -77,3 +73,8 @@ This document contains my comprehensive, macro-level reflection on the 10-week d
 [View Week 7 Developer Commentary](DevelopercommentaryWK7.md)
 
 ---
+
+## Declared Assets
+
+The structuring, rewording and general spell checking of parts of this writeup were modified with the help of Gemini 3.1 Pro. 
+
