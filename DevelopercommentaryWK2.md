@@ -126,69 +126,7 @@ async def upload(interaction: discord.Interaction, file: discord.Attachment, art
 bot.run(DISCORD_TOKEN)
 ```
 
-### Part 2: Unreal Engine Steamworks Integration
 
-Because our client brief specifies that the final product will be distributed on Steam, we cannot rely on Unreal Engine's default LAN networking for our production tests. To ensure our network testing accurately reflects the final production environment, I needed to integrate the Steamworks Online Subsystem into our Unreal project pipeline *(Epic Games, s.d.)*.
-
-#### 1. Engine Configuration (`DefaultEngine.ini`)
-
-To route Unreal's session interfaces through the Steam API, I had to expose and configure the `OnlineSubsystemSteam` module. I modified the project's `DefaultEngine.ini` file to declare Steam as the default platform service. 
-
-**Key Technical Decision:** Since we do not yet have our official Steam App ID for the game, I utilized the spacewar App ID (`480`) to establish the handshake with Steam's backend. This allows the engine to piggyback off the Steam overlay and utilize their relay network (Spacewar/test server masking) for our initial server hosting tests.
-
-I also configured the `CrashReportClient` settings to ensure that when the game inevitably crashes during testing, the logs are formatted and routed correctly, providing a foundation for future QA pipelines, a critical component of modern engine architecture *(Gregory, 2018)*.
-
-```
-
-[OnlineSubsystem]
-DefaultPlatformService=Steam
-
-[OnlineSubsystemSteam]
-bEnabled=true
-# Steam APPID should go here once we get it
-SteamDevAppId=480
-bInitServerOnClient=true
-
-[CrashReportClient]
-bAgreeToCrashUpload=false
-bSendUnattendedBugReports=false
-CompanyName="[GreedyPiggies]"
-DataRouterUrl="[https://dot.nj.gov/transportation/refdata/accident/selfreporting.shtm](https://dot.nj.gov/transportation/refdata/accident/selfreporting.shtm)"
-UserCommentSizeLimit=4000
-bAllowToBeContacted=true
-bSendLogFile=true
-
-[/Script/SteamSockets.SteamSocketsNetDriver]
-NetConnectionClassName="/Script/SteamSockets.SteamSocketsNetConnection"
-
-```
-
-#### 2. Prototyping the Session Architecture (Blueprints)
-
-With the `.ini` configured, I moved into the engine to build the user interface and logic required to test the Steam connection. I created a basic placeholder menu widget (`WBP_MultiplayerMenu`) containing the necessary UI binds to host and join a session.
-
-![alt text](image-3.png)
-*Figure 4. Placeholder UI for the WBP_MultiplayerMenu, allowing users to interact with the Steam session nodes.*
-
-To drive this UI, I authored two core Blueprint scripts to handle the Steam status and session management:
-
-**Blueprint: `BP_SteamStatus`** This logic checks the initialization of the Steam Subsystem upon launch, verifying that the client is successfully logged in and communicating with the Steam backend.
-
-![alt text](image-4.png)
-![alt text](image-5.png)
-
-**Blueprint: `WBP_MultiplayerMenu` Logic** This handles the creation of a listen server and queries Steam for active lobbies, using Unreal's asynchronous `Create Session` and `Find Sessions` nodes.
-
-![alt text](image-6.png)
-![alt text](image-7.png)
-
-### Reflection and Next Steps
-
-The successful implementation of the Steam Subsystem this week was a major pipeline milestone. Being able to host and join a server via Steam using a placeholder App ID proves our network architecture is viable before we write any complex gameplay code. 
-
-My next objective will be to expand on the `WBP_MultiplayerMenu` to parse the array of found sessions and display them dynamically in a server browser list, rather than relying on a direct join test. I will also monitor the updated Discord bot to ensure the error handling holds up as artists begin pushing heavier assets into the repository.
-
----
 
 # BIBLIOGRAPHY
 

@@ -52,48 +52,7 @@ sequenceDiagram
 ```
 ---
 
-### Part 2: Finalizing the Auditing Game Loop
 
-Returning to the engine, this week marked a massive milestone: the core gameplay loop, including the highly volatile Auditing mechanic, is finally functional across the network. 
-
-Because the architecture required to sync UI, player turns, and economic variables simultaneously was incredibly complex, I adopted a highly collaborative workflow this week, working closely alongside two of my classmates, Harry and Bradley. By dividing the workload—Harry focusing on the visual UI layouts, Bradley assisting with the state machine logic, and myself driving the network replication and RPC routing—we were able to break through the bottlenecks that plagued Week 6.
-
-#### The UI Networking Paradigm
-
-The biggest hurdle was ensuring that interactive widgets only appeared for the correct players at the correct times, without the server forcefully drawing UI on non-owning clients. To solve this, we integrated two new specific widget blueprints: `WBP_AuditInput` (where the active player declares their bluff or truth) and `WBP_AuditDecision` (where the opposing player chooses whether to call the bluff).
-
-**The Communication Flow:**
-1. **The Trigger:** The server's `BP_Dealer` state machine advances the turn. 
-2. **Client RPC (Input):** The server identifies the active player's `PlayerController` and fires a `Client RPC`. This guarantees that *only* the active player's machine constructs and adds `WBP_AuditInput` to their viewport.
-
-![alt text](image-22.png)
-*Figure 12. In-game screenshot of WBP_AuditInput successfully displaying exclusively on the active client's screen during their turn.*
-
-3. **Server Verification:** The player selects their card and clicks submit. The widget tells the `PlayerController` to fire a `Server RPC` containing the selected data. The server receives this, validates the move against the deck array, and temporarily hides the active player's UI.
-4. **Targeted Client RPC (Decision):** The server then identifies the *next* player in the turn order sequence. It fires a new `Client RPC` to that specific player's controller, telling their machine to construct `WBP_AuditDecision`. 
-
-![alt text](image-23.png)
-*Figure 13. Blueprint logic demonstrating the construction of WBP_AuditDecision. Note the strict reliance on Owning Client checks before viewport attachment.*
-
-![alt text](audit_decision_gameplay.png)
-*Figure 14. In-game screenshot of WBP_AuditDecision appearing for the targeted opponent, while the rest of the lobby enters a "waiting" state.*
-
-#### Replicating the Economic Resolution
-
-Once the opposing player interacts with `WBP_AuditDecision` (choosing to "Call Bluff" or "Pass"), they fire a final `Server RPC`. This is where the mathematical resolution we struggled with last week finally clicked into place.
-
-Because the server holds the absolute truth of what card was *actually* played versus what card was *claimed*, it calculates the audit outcome entirely isolated from the clients. It determines who gains and loses money, updates the `Replicated` integer variables on both players' Character blueprints, and triggers the `RepNotify` functions. 
-
-Because we routed this entirely through the server's state machine rather than relying on the widgets to do the math, the synchronization is now flawless. All players see the money totals update simultaneously, and the `BP_Dealer` cleanly iterates the turn index to the next player, looping the game state.
-
-![alt text](image-24.png)
-*Figure 15. The finalized BP_Dealer macro-loop, showcasing the server-authoritative logic that connects the Audit Decision back into the primary turn iteration.*
-
-### Reflection and Next Steps
-
-Collaborating tightly with Harry and Bradley this week proved that complex networking issues are often solved through clear architectural planning and team communication, rather than brute-force coding. We transitioned from a broken, desynchronized prototype to a fully playable, networked game loop. Moving into Week 8, the focus will shift entirely to polish: adding visual flair, sound effects (utilizing the audio we recorded in Week 3), and ensuring the lobby seamlessly transitions into this finalized gameplay map.
-
----
 
 # BIBLIOGRAPHY
 

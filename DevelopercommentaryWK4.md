@@ -29,20 +29,7 @@ I took ownership of `BP_Dealer` and overhauled its architecture to operate on a 
 ![alt text](image-11.png)
 *Figure 7. The BP_Dealer blueprint showcasing the transition from local logic to Server-Authoritative Custom Events for card distribution.*
 
-### Part 3: Server Browser and Player ID Resolution
 
-Alongside the gameplay networking, I revisited the multiplayer UI architecture established in Week 2. During initial playtesting of our Steam integration, we encountered a critical bug: when clients joined a hosted server via the server browser, their Player IDs (Unique Net IDs) were not being assigned or passed correctly, breaking player identification in the lobby.
-
-I traced the issue to how the session data was being parsed within the UI widget. I upgraded the `WB_ServerBrowserItem` blueprint to properly handle the `Blueprint Session Result`. 
-
-**The Fix:** When the list populates, the widget now explicitly extracts and stores the correct Session ID and host data. When the client clicks "Join," the widget reliably passes this verified session reference to the `Join Session` node, ensuring the Steam Online Subsystem successfully negotiates the connection and properly registers the client's Unique Net ID upon entering the server *(Epic Games, s.d.-b)*.
-
-![alt text](image-12.png)
-*Figure 8. Upgraded WB_ServerBrowserItem logic, demonstrating the correct extraction and passing of session data to ensure Player IDs initialize correctly on join.*
-
-### Reflection and Next Steps
-
-This week successfully bridged the gap between pipeline tooling and gameplay programming. Refactoring the `BP_Dealer` to rely on server authority secures the integrity of our game, and fixing the server browser UI ensures players can actually connect to test it. Moving into Week 5, my goal will be to finalize the lobby transition sequence so that once all players have successfully joined the session with their correct IDs, the server can seamlessly seamless-travel everyone into the active game map.
 
 ---
 

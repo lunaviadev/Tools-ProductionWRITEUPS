@@ -55,51 +55,7 @@ Content-Type: application/json
 
 ---
 
-### Part 2: State Synchronization and Gameplay Replication
 
-Returning to the Unreal Engine project, Week 5 was a heavy production sprint focused on the complexities of network replication. With our Steam session architecture successfully establishing connections last week, the primary objective was now syncing the actual gameplay state—specifically card dealing, turn orders, and scoring—across all connected clients.
-
-#### Synchronizing the Dealer and Turn Management
-
-In a multiplayer card game, enforcing a strict "Server-Authoritative" network model is non-negotiable. If clients are trusted to manage their own decks, hands, or turn states, the game becomes fundamentally vulnerable to desynchronization and malicious exploitation (cheating) *(Ruiz, 2017)*. 
-
-Building upon the `BP_Dealer` blueprint introduced previously, I engineered a highly deterministic turn-based flow. The server holds the absolute truth regarding the deck array and a tracking integer representing the current active player's turn. 
-
-When a client attempts to draw a card or play a hand, their input sends a "Run on Server" Remote Procedure Call (RPC). The server does not blindly accept this request. Instead, it first checks the turn integer to validate if it is legally that player's turn. Only if this server-side validation passes does the server modify the deck array and deal the card. This ensures "dumb clients"—they only request actions and display visual results, while the server handles all logical arbitration.
-
-![alt text](image-13.png)
-![alt text](image-14.png)
-![alt text](image-15.png)
-*Figure 9. BP_Dealer logic expanding on the Server-Authoritative turn validation. Notice the strict gating logic where the server acts as the absolute arbiter of game flow.*
-
-#### Replicating Player State: RepNotify vs. Multicast
-
-To handle persistent player-specific data, such as tracking individual points, I utilized the `BP_FirstPersonCharacter_HarryTesting` blueprint. A critical production requirement was ensuring that when a player scores, every other client's UI updates synchronously.
-
-Initially, one might consider using a Multicast RPC to broadcast a "Update Score" event to all clients. However, this is a poor architectural choice for critical game state data. Multicast RPCs are transient; if a client experiences temporary packet loss or joins the session late (JIP - Join In Progress), they will miss the Multicast and their score UI will permanently desync. 
-
-Instead, I explicitly utilized Unreal's **Variable Replication** paired with a `RepNotify` function *(Epic Games, s.d.)*:
-1. I designated the `PlayerScore` integer as a `Replicated` variable.
-2. I configured it to trigger the `OnRep_PlayerScore` function whenever its value changes.
-3. When the server increments a player's score, the engine automatically guarantees that this new variable state is pushed to all relevant clients. Upon receiving the new value, the client automatically fires the `OnRep` function, which contains the logic to update their local UI widgets. This ensures "eventual consistency" across the network regardless of latency spikes.
-
-![alt text](image-16.png)
-![alt text](image-17.png)
-![alt text](image-18.png)
-*Figure 10. BP_FirstPersonCharacter_HarryTesting showcasing the Replicated Score variable. The RepNotify paradigm ensures the UI remains intrinsically linked to the server's confirmed variable state.*
-
-### Technical Hurdles and Troubleshooting
-
-Transitioning from local logic to networked gameplay introduced a steep learning curve, requiring significant debugging and troubleshooting throughout the week:
-
-1. **Dropped RPCs and Actor Ownership:** My most time-consuming roadblock occurred when clients pressed the input to draw a card, but the server completely ignored the request. Using `Print String` nodes with Authority switches, I diagnosed this as an Actor Ownership violation. In Unreal Engine, a client can only execute a "Run on Server" RPC on an Actor they explicitly own (such as their `PlayerController` or possessed `Pawn`) *(Glazer and Madhav, 2015)*. Because the `BP_Dealer` is an item placed in the world, the server owns it, causing it to automatically drop client RPCs to prevent spoofing. I resolved this architectural flaw by routing the player's input request through their possessed `BP_FirstPersonCharacter`, which *does* have ownership, and having the Character execute the server function on the Dealer reference.
-2. **Listen-Server UI Desynchronization:** During live testing, I noticed that the host player's score UI was not updating, even though the connected clients saw the host's score increase perfectly. Through further research into the engine's network framework, I realized that `RepNotify` functions do not automatically execute on the server when the variable changes; they are designed to only fire on remote clients receiving the network update. I patched this by structuring the logic so the server manually calls the UI update function immediately after it increments its own score variable, ensuring visual parity between the host and the clients.
-
-### Reflection and Next Steps
-
-This week was highly demanding but resulted in a massive leap forward for the project's technical viability. Troubleshooting the strict rules of actor ownership and mastering the nuances of `RepNotify` vs. RPCs has fortified the multiplayer foundation of our pipeline. Moving into Week 6, my primary goal will be to finalize the end-game state conditions. I need to architect a system where, upon the deck depleting or a score limit being reached, the server properly halts all player inputs and replicates a synchronized "Game Over" UI state to all clients simultaneously.
-
----
 
 # BIBLIOGRAPHY
 

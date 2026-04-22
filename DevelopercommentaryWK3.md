@@ -1,24 +1,4 @@
-## Week 3 - Security, Compliance, and Network Architecture Evaluation
 
-### Production Context & Pre-Planning
-
-This week shifted focus away from active engine development and towards a mix of technical auditing, pipeline security, and hands-on asset production. Before committing our Discord-to-GitHub asset ingestion tool (developed in Weeks 1 and 2) to a permanent production environment, it was mandatory to evaluate it from a networking, security, and compliance perspective. 
-
-Concurrently, I used the remainder of this week to begin the architectural planning for our Unreal Engine networking framework, mapping out the RPCs (Remote Procedure Calls) and variable replication needed to sync gameplay states across clients for next week's sprint.
-
-### Audio Production Pipeline: Studio Recording
-
-Alongside my technical and managerial duties, I took a hands-on role in the project's audio production this week. Recognizing the need for bespoke, high-quality voice lines to give our *Liar's Bar*-inspired characters distinct personalities, we booked out the on-campus recording studio for an entire day of uninterrupted tracking.
-
-Acting as the session engineer, I utilized the studio's acoustic environment and operated Logic Pro as our primary Digital Audio Workstation (DAW). This process involved managing the physical microphone setups, actively monitoring input gain levels to prevent audio clipping during louder vocal takes, and organizing the recorded stems within Logic's timeline. Capturing high-fidelity, uncompressed audio is critical for modern game development, as low-quality source files cannot be "fixed" later in the engine. 
-
-Following the day-long session, these raw recordings had to be bounced, properly named according to our project's naming conventions, and prepared for engine integration. This cross-discipline involvement not only expanded my production skill set but also practically reinforced the necessity of our Discord asset pipeline, as we now had gigabytes of raw audio data that needed a frictionless path into our version control repository.
-
-![alt text](image-19.png)
-
-![alt text](image-20.png)
-
-![alt text](image-21.png)
 
 ### Tool Security Evaluation: Threat Identification
 

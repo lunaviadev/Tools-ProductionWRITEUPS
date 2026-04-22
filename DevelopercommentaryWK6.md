@@ -1,26 +1,4 @@
-## Week 6 - Managerial Pivot, Auditing Mechanics, and Automated Testing
 
-### Part 1: Production Leadership and Cross-Discipline Communication
-
-As we crossed the halfway point of the 10-week development cycle, it became apparent that while our technical pipelines were solidifying, the game's actual production flow was bottlenecking. The game designers and artists were somewhat siloed, lacking clear integration directives. Recognizing this gap, I began stepping into a more managerial production role alongside my technical duties. 
-
-Referencing the RACI chart we established in Week 1, I took on accountability for unblocking the design team. I started formally instructing the game designers on how their deliverables needed to interface with the multiplayer framework. For instance, I directed the UI designers on strict widget hierarchy rules required for network replication, and I coordinated with the level designers to ensure the map's player spawn points were compatible with the `GameMode`'s handling of multiplayer connections. This shift from pure programming to technical management was a vital learning experience in studio dynamics, emphasizing that even perfect code is useless if the art and design teams don't know how to interface with it *(Chandler, 2013)*.
-
-### Part 2: The Auditing System Crisis
-
-Returning to the codebase, the primary engineering goal this week was implementing the "Auditing" system—the core mechanic of our *Liar's Bar*-inspired gameplay where players can call out a bluff, resulting in the gain or loss of in-game currency. 
-
-Unfortunately, integrating this into our networked environment surfaced massive critical bugs. During initial testing, the auditing option UI simply wasn't appearing for remote clients, and when a host *did* force an audit, the economic calculation (adding/subtracting money) failed to synchronize. A player would see themselves gaining money, but the server and other clients still saw them at a zero balance.
-
-#### Iterative Debugging and Technical Fixes
-
-This triggered a grueling, iterative testing process. Troubleshooting multiplayer logic in Unreal Engine requires constant back-and-forth between editing Blueprints and launching multi-client PIE (Play In Editor) sessions to observe the network desynchronization in real-time. 
-
-Based on my analysis of the network traffic and Blueprint execution flows, I deduced and implemented several major fixes to the `BP_Dealer` and `BP_FirstPersonCharacter` logic:
-1. **Widget Ownership and Client RPCs:** The reason the Auditing UI failed to appear for remote clients was a violation of UI instancing. The server was attempting to draw the UI directly. I refactored the flow so the server instead sends a `Client RPC` (Run on Owning Client) to the specific player whose turn it is to audit. That client's local Player Controller then securely constructs and adds the widget to their specific viewport.
-2. **Authoritative Economic Calculations:** The money synchronization failure was a classic race condition. Clients were calculating their own math locally before the server confirmed the audit result. I stripped all economic math from the client side. Now, when an audit is called, the server executes the math, updates the replicated `PlayerMoney` variable, and relies on the `RepNotify` architecture we established in Week 5 to push the updated balance to the clients' screens.
-
-Despite these significant technical overhauls and days of iterative testing, the complete macro-loop of the game remained unstable by the end of the week. While the isolated auditing math now replicates correctly, edge cases regarding turn transitions immediately after an audit are still causing the state machine to hang.
 
 ### Part 3: Automated Pipeline Testing & Data Visualization
 

@@ -1,21 +1,3 @@
-## Week 1 - Setup and Version Control Pipeline
-
-### Project Context and Production Framework
-
-The primary objective for this 10-week cycle is to develop and publish a multiplayer game to Steam. To accurately emulate a real-world studio environment, the course is structured as a professional company simulation. My assigned role heavily focuses on technical production—specifically architecting asset integration pipelines, managing version control for non-technical staff, and handling the Steam backend administrative tasks.
-
-Going into pre-production, we were provided with a client brief detailing the game's style and parameters. We established that we are developing a multiplayer card game, mechanically and thematically inspired by titles such as ***(Liar’s Bar on Steam, s.d.)*** and traditional rulesets like ***(Cheat / I Doubt It - Card Game Rules, s.d.)***. Because of the rapid development cycle and the complexity of coordinating multiple disciplines, robust pre-planning was essential before moving into the engine.
-
-To formalize our studio hierarchy and ensure clear communication, we adopted standard project management methodologies, starting with a RACI chart. This matrix explicitly defines who is Responsible, Accountable, Consulted, and Informed across every major project milestone.
-
-![alt text](image.png)
-*Figure 1. RACI Chart established during the initial sprint planning to map out studio responsibilities.*
-
-### Identifying the Pipeline Bottleneck
-
-With the administrative foundation set, I immediately began developing my first technical tool. Anticipating a very common production bottleneck, I recognized that our 2D artists and 3D animators would likely experience high friction when interacting directly with Git and GitHub. Version control command-line interfaces (CLIs) and desktop clients can be overwhelming for non-programmers, often leading to merge conflicts, misnamed directories, or lost assets. 
-
-To mitigate this risk, I set out to engineer a frictionless middle-man tool: a Discord Bot that allows artists to push assets directly into our repository from an environment they already use daily.
 
 ### Engineering the Discord-to-GitHub Bridge
 
