@@ -24,7 +24,7 @@ Each week will contain its own bibliography for references and sources specifica
 
 This document contains my comprehensive, macro-level reflection on the 10-week development cycle, detailing the overall technical implementation, research, testing data, and critical reflection for the entire project.
 
-**[View Full Project Developer Commentary](DeveloperCommentaryFULL.md)**
+[View Full Project Developer Commentary](DevelopercommentaryFULL.md)
 
 ---
 
