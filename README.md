@@ -8,10 +8,6 @@
 
 **Total Word Count:** [8883]
 
-**Build Link:** 
-
-**Video Demonstration Link:** 
-
 ---
 
 # FGCT5017: Tools and Production - Weekly Tasks
